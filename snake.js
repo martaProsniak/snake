@@ -11,6 +11,22 @@ ground.src = "img/ground.png";
 const foodImg = new Image();
 foodImg.src = "img/food.png";
 
+//load audio files
+const dead = new Audio();
+const eat = new Audio();
+const up = new Audio();
+const left = new Audio();
+const right = new Audio();
+const down = new Audio();
+
+dead.src = "audio/dead.mp3";
+eat.src = "audio/eat.mp3";
+up.src = "audio/up.mp3";
+right.src = "audio/right.mp3";
+left.src = "audio/left.mp3";
+down.src = "audio/down.mp3";
+
+
 // create the snake
 let snake = [];
 snake[0] = {
@@ -35,12 +51,16 @@ document.addEventListener("keydown", direction);
 function direction(event) {
     let key = event.keyCode;
     if (key == 37 && d != "RIGHT") {
+        left.play();
         d = "LEFT";
     } else if (key == 38 && d != "DOWN") {
+        down.play();
         d = "UP";
     } else if (key == 39 && d != "LEFT") {
+        right.play();
         d = "RIGHT";
     } else if (key == 40 && d != "UP") {
+        down.play();
         d = "DOWN";
     };
 }
@@ -81,6 +101,7 @@ function draw() {
     // if the snake eat the food
     if (snakeX == food.x && snakeY == food.y) {
         score++;
+        eat.play();
         food = {
             x: Math.floor(Math.random() * 17 + 1) * box,
             y: Math.floor(Math.random() * 15 + 3) * box
@@ -98,6 +119,7 @@ function draw() {
     // game over
     if (snakeX < box || snakeX > 17 * box || snakeY < 3*box || snakeY > 17 * box || collision(newHead, snake)){
         clearInterval(game);
+        dead.play();
     }
 
     snake.unshift(newHead);
