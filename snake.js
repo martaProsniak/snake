@@ -20,8 +20,8 @@ snake[0] = {
 
 // create the food
 let food = {
-    x: Math.floor(Math.random()*17+1) * box,
-    y: Math.floor(Math.random()*15*3) * box
+    x: Math.floor(Math.random() * 17 + 1) * box,
+    y: Math.floor(Math.random() * 15 * 3) * box
 };
 
 // create the score var
@@ -32,25 +32,26 @@ let d;
 // control the snake
 document.addEventListener("keydown", direction);
 
-function direction(event){
-    if (event.keyCode == 37){
+function direction(event) {
+    let key = event.keyCode;
+    if (key == 37 && d != "RIGHT") {
         d = "LEFT";
-    } else if (event.keyCode == 38){
+    } else if (key == 38 && d != "DOWN") {
         d = "UP";
-    } else if (event.keyCode == 39){
+    } else if (key == 39 && d != "LEFT") {
         d = "RIGHT";
-    } else if (event.keyCode == 40){
+    } else if (key == 40 && d != "UP") {
         d = "DOWN";
     };
 }
 
 //draw everything on canvas
-function draw (){
+function draw() {
 
-    ctx.drawImage(ground,0,0);
+    ctx.drawImage(ground, 0, 0);
 
-    for (let i = 0; i < snake.length; i++){
-        ctx.fillStyle = (i == 0) ? "green":"white";
+    for (let i = 0; i < snake.length; i++) {
+        ctx.fillStyle = (i == 0) ? "green" : "white";
         ctx.fillRect(snake[i].x, snake[i].y, box, box);
 
         ctx.strokeStyle = "red";
@@ -67,11 +68,21 @@ function draw (){
     if (d == "UP") snakeY -= box;
     if (d == "RIGHT") snakeX += box;
     if (d == "DOWN") snakeY += box;
-    // remove the tail
-    snake.pop();
-    
+
+    // if the snake eat the food
+    if (snakeX == food.x && snakeY == food.y) {
+        score++;
+        food = {
+            x: Math.floor(Math.random() * 17 + 1) * box,
+            y: Math.floor(Math.random() * 15 + 3) * box
+        }
+    } else {
+        // remove the tail
+        snake.pop();
+    }
+
     // add new head
-    let newHead ={
+    let newHead = {
         x: snakeX,
         y: snakeY
     };
@@ -80,9 +91,9 @@ function draw (){
 
     ctx.fillStyle = "white";
     ctx.font = "45px Changa one";
-    ctx.fillText(score, 2*box, 1.6*box);
+    ctx.fillText(score, 2 * box, 1.6 * box);
 }
 
-let game = setInterval(draw,100);
+let game = setInterval(draw, 100);
 
 
