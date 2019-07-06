@@ -81,6 +81,11 @@ function draw() {
         snake.pop();
     }
 
+    // game over
+    if (snakeX < box || snakeX > 17 * box || snakeY < 3*box || snakeY > 17 * box){
+        clearInterval(game);
+    }
+
     // add new head
     let newHead = {
         x: snakeX,
